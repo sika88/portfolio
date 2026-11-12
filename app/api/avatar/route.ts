@@ -2,7 +2,7 @@ import { auth, isAdminSession } from "@/auth";
 import { ensureAvatarTable, getSql } from "@/lib/avatar-db";
 
 const ALLOWED = ["image/jpeg", "image/png", "image/webp"];
-const MAX_BYTES = 300 * 1024;
+const MAX_BYTES = 500 * 1024;
 
 // Public: anyone can view the picture
 export async function GET() {

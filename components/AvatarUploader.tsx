@@ -6,7 +6,7 @@ import { signOut } from "next-auth/react";
 const SOURCES = ["/api/avatar", "/profile.jpg"]; // then initials
 
 // Crop to a centered square and shrink before uploading
-function toSquareBlob(file: File, size = 256): Promise<Blob> {
+function toSquareBlob(file: File, size = 640): Promise<Blob> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     const url = URL.createObjectURL(file);
