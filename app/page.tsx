@@ -1,3 +1,4 @@
+import SiteHeader from "@/components/SiteHeader";
 import CurrentYear from "@/components/CurrentYear";
 import { profile, projects, skills, services } from "@/lib/data";
 
@@ -5,6 +6,7 @@ export default function Home() {
   return (
     <>
       <div className="stripe" aria-hidden="true" />
+    <SiteHeader name={profile.name} />
       <main className="wrap">
         <header className="hero">
           <p className="where">{profile.role} in {profile.location}</p>

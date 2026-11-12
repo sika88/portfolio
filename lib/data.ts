@@ -16,8 +16,8 @@ export const projects = [
     summary:
       "Teams sign in with Google, create boards, and see cards move live across every open screen.",
     stack: ["Next.js", "Auth.js", "Drizzle", "Neon Postgres", "Pusher"],
-    live: "https://your-kanban.vercel.app",
-    code: "https://github.com/your-username/kanban",
+    live: "https://kanban-delta-beige.vercel.app/",
+    code: "https://github.com/sika88/kanban",
   },
   {
     title: "Offline-first PWA",
