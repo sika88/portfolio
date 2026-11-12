@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+import CurrentYear from "@/components/CurrentYear";
 import { profile, projects, skills, services } from "@/lib/data";
 
 export default function Home() {
@@ -56,7 +56,7 @@ export default function Home() {
           </p>
         </section>
 
-        <footer>© {new Date().getFullYear()} {profile.name}</footer>
+        <footer>© <CurrentYear /> {profile.name}</footer>
       </main>
     </>
   );
