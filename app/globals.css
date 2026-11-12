@@ -99,11 +99,12 @@ footer { margin-top: 4rem; padding-top: 1.25rem; border-top: 1px solid var(--lin
   height: 48px;
   border-radius: 9999px;
   overflow: hidden;
-  cursor: context-menu;
   box-shadow: 0 0 0 2px #1a6b4b, 0 4px 12px rgba(27, 42, 74, 0.2);
   transition: transform 0.2s ease;
 }
 .avatar:hover { transform: scale(1.06); }
+
+.avatar--admin { cursor: context-menu; }
 
 .avatar__img {
   width: 100%;

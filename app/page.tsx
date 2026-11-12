@@ -58,7 +58,7 @@ export default function Home() {
           </p>
         </section>
 
-        <footer>© <CurrentYear /> {profile.name}</footer>
+        <footer>© <CurrentYear /> {profile.name} · <a href="/api/auth/signin">Admin</a></footer>
       </main>
     </>
   );

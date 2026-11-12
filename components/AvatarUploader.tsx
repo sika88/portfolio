@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { signOut } from "next-auth/react";
 
-const STORAGE_KEY = "profile-avatar";
-const DEFAULT_SRC = "/profile.jpg";
+const SOURCES = ["/api/avatar", "/profile.jpg"]; // then initials
 
-// Crop to a centered square and shrink, so the saved image stays small
-function toSquareDataUrl(file: File, size = 256): Promise<string> {
+// Crop to a centered square and shrink before uploading
+function toSquareBlob(file: File, size = 256): Promise<Blob> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     const url = URL.createObjectURL(file);
@@ -21,7 +21,11 @@ function toSquareDataUrl(file: File, size = 256): Promise<string> {
       const sy = (img.height - min) / 2;
       ctx.drawImage(img, sx, sy, min, min, 0, 0, size, size);
       URL.revokeObjectURL(url);
-      resolve(canvas.toDataURL("image/jpeg", 0.85));
+      canvas.toBlob(
+        (b) => (b ? resolve(b) : reject(new Error("Could not encode"))),
+        "image/jpeg",
+        0.85
+      );
     };
     img.onerror = () => {
       URL.revokeObjectURL(url);
@@ -32,23 +36,30 @@ function toSquareDataUrl(file: File, size = 256): Promise<string> {
 }
 
 export default function AvatarUploader({ name }: { name: string }) {
-  const [src, setSrc] = useState<string | null>(DEFAULT_SRC);
-  const [custom, setCustom] = useState(false);
+  const [admin, setAdmin] = useState(false);
+  const [stage, setStage] = useState(0);
+  const [version, setVersion] = useState(0);
   const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
 
-  // Load a previously uploaded image
+  // Ask the server whether this visitor is the admin
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        setSrc(saved);
-        setCustom(true);
-      }
-    } catch {}
+    fetch("/api/me", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => setAdmin(!!d.admin))
+      .catch(() => setAdmin(false));
   }, []);
 
-  // Close the menu on any click, scroll, or Escape
+  // Catch images that failed before React hydrated
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img && img.complete && img.naturalWidth === 0) {
+      setStage((s) => s + 1);
+    }
+  }, [stage]);
+
+  // Close the menu on click, scroll, or Escape
   useEffect(() => {
     if (!menu) return;
     const close = () => setMenu(null);
@@ -68,21 +79,27 @@ export default function AvatarUploader({ name }: { name: string }) {
     e.target.value = "";
     if (!file || !file.type.startsWith("image/")) return;
     try {
-      const dataUrl = await toSquareDataUrl(file);
-      setSrc(dataUrl);
-      setCustom(true);
-      localStorage.setItem(STORAGE_KEY, dataUrl);
+      const blob = await toSquareBlob(file);
+      const form = new FormData();
+      form.append("file", blob, "avatar.jpg");
+      const res = await fetch("/api/avatar", { method: "POST", body: form });
+      if (!res.ok) throw new Error("Upload failed");
+      setStage(0);
+      setVersion(Date.now());
     } catch {
-      alert("Sorry, that image could not be used.");
+      alert("Sorry, the upload failed. Make sure you are signed in.");
     }
   }
 
-  function removePhoto() {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch {}
-    setSrc(DEFAULT_SRC);
-    setCustom(false);
+  async function removePhoto() {
+    await fetch("/api/avatar", { method: "DELETE" });
+    setStage(0);
+    setVersion(Date.now());
+  }
+
+  async function logout() {
+    await signOut({ redirect: false });
+    setAdmin(false);
   }
 
   const initials = name
@@ -92,23 +109,29 @@ export default function AvatarUploader({ name }: { name: string }) {
     .join("")
     .toUpperCase();
 
+  const src =
+    stage === 0 ? `/api/avatar?v=${version}` : stage === 1 ? SOURCES[1] : null;
+
   return (
     <>
       <div
-        className="avatar"
+        className={`avatar${admin ? " avatar--admin" : ""}`}
         onContextMenu={(e) => {
+          if (!admin) return; // visitors get the normal browser menu
           e.preventDefault();
           setMenu({ x: e.clientX, y: e.clientY });
         }}
-        title="Right-click to change photo"
+        title={admin ? "Right-click to change photo" : undefined}
       >
         {src ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
+            key={src}
+            ref={imgRef}
             src={src}
             alt={`Photo of ${name}`}
             className="avatar__img"
-            onError={() => setSrc(null)}
+            onError={() => setStage((s) => s + 1)}
           />
         ) : (
           <span className="avatar__placeholder" aria-label={`${name} placeholder`}>
@@ -117,32 +140,25 @@ export default function AvatarUploader({ name }: { name: string }) {
         )}
       </div>
 
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        hidden
-        onChange={onFile}
-      />
+      <input ref={inputRef} type="file" accept="image/*" hidden onChange={onFile} />
 
-      {menu && (
-        <ul
-          className="avatar-menu"
-          role="menu"
-          style={{ top: menu.y, left: menu.x }}
-        >
+      {admin && menu && (
+        <ul className="avatar-menu" role="menu" style={{ top: menu.y, left: menu.x }}>
           <li role="none">
             <button role="menuitem" onClick={() => inputRef.current?.click()}>
               Upload image…
             </button>
           </li>
-          {custom && (
-            <li role="none">
-              <button role="menuitem" onClick={removePhoto}>
-                Remove photo
-              </button>
-            </li>
-          )}
+          <li role="none">
+            <button role="menuitem" onClick={removePhoto}>
+              Remove photo
+            </button>
+          </li>
+          <li role="none">
+            <button role="menuitem" onClick={logout}>
+              Sign out
+            </button>
+          </li>
         </ul>
       )}
     </>
