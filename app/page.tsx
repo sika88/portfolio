@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { profile, projects, skills, services } from "@/lib/data";
 
 export default function Home() {
