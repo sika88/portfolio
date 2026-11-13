@@ -1,3 +1,187 @@
+/* ================= Dark theme: sign-in + admin dashboard ================= */
+.signin, .adm {
+  --d-border: rgba(139, 92, 246, 0.3);
+  --d-surface: rgba(255, 255, 255, 0.04);
+  --d-muted: #a5a8c8;
+  --d-grad: linear-gradient(90deg, #d946ef, #8b5cf6 50%, #60a5fa);
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: #f4f4ff;
+  background:
+    radial-gradient(50rem 28rem at 85% -5%, rgba(99, 102, 241, 0.3), transparent 60%),
+    radial-gradient(40rem 26rem at -10% 30%, rgba(168, 85, 247, 0.18), transparent 60%),
+    #07071a;
+}
+body:has(.signin), body:has(.adm) { background: #07071a; }
+
+/* ---------- Sign-in ---------- */
+.signin { display: flex; flex-direction: column; }
+.signin__stripe { height: 6px; background: var(--d-grad); }
+.signin__main { flex: 1; display: grid; place-items: center; padding: 1.5rem; }
+.signin__card {
+  width: 100%;
+  max-width: 26rem;
+  padding: 2.25rem 2rem 1.75rem;
+  text-align: center;
+  border-radius: 1.25rem;
+  border: 1px solid var(--d-border);
+  background: rgba(16, 16, 44, 0.85);
+  box-shadow: 0 24px 60px rgba(76, 29, 149, 0.35);
+}
+.signin__icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 1.25rem;
+  border-radius: 0.9rem;
+  background: rgba(139, 92, 246, 0.18);
+  color: #c4b5fd;
+}
+.signin__card h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+.signin__lead { margin: 0 0 1.5rem; color: var(--d-muted); line-height: 1.6; }
+.signin__button {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  font: inherit;
+  font-weight: 600;
+  color: #1b2a4a;
+  background: #fff;
+  border: 0;
+  border-radius: 0.7rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.signin__button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.45);
+}
+.signin__button:disabled { opacity: 0.65; cursor: progress; }
+.signin__error {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.92rem;
+  color: #fecaca;
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  border-radius: 0.6rem;
+}
+.signin__note { margin: 1.25rem 0 0; font-size: 0.85rem; color: var(--d-muted); }
+.signin__back {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  color: var(--d-muted);
+  text-decoration: none;
+}
+.signin__back:hover { color: #fff; }
+
+/* ---------- Admin dashboard ---------- */
+.adm { padding-bottom: 6rem; }
+.adm-loading { padding: 3rem 1.5rem; text-align: center; color: var(--d-muted); }
+.adm-top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(7, 7, 26, 0.8);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+}
+.adm-top__inner, .adm-main, .adm-bar__inner {
+  width: min(100% - 2.5rem, 56rem);
+  margin-inline: auto;
+}
+.adm-top__inner { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 0; flex-wrap: wrap; }
+.adm-top h1 { margin: 0 auto 0 0; font-size: 1.25rem; font-weight: 800; color: #fff; }
+.adm-main { padding-top: 1.5rem; display: grid; gap: 1.25rem; }
+.adm-card {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--d-border);
+  background: var(--d-surface);
+}
+.adm-card h2 { margin: 0 0 0.25rem; font-size: 1.15rem; color: #fff; }
+.adm-hint { margin: 0; font-size: 0.9rem; color: var(--d-muted); }
+.adm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; margin-top: 1rem; }
+.adm-field { display: grid; gap: 0.4rem; font-size: 0.85rem; font-weight: 600; color: #ddd6fe; }
+.adm-field--wide { grid-column: 1 / -1; }
+.adm-field input, .adm-field textarea {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+  font-weight: 400;
+  color: #fff;
+  background: rgba(8, 8, 28, 0.7);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 0.6rem;
+}
+.adm-field textarea { min-height: 6rem; resize: vertical; line-height: 1.5; }
+.adm-field input:focus, .adm-field textarea:focus { outline: 2px solid #a78bfa; outline-offset: 1px; }
+.adm-field small { font-weight: 400; color: var(--d-muted); }
+.adm-project {
+  margin-top: 1rem;
+  padding: 1.25rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  background: rgba(8, 8, 28, 0.45);
+}
+.adm-project__head { display: flex; align-items: center; gap: 0.5rem; }
+.adm-project__head strong { margin-right: auto; color: #fff; }
+
+.adm-btn {
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e9d5ff;
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid #a855f7;
+  border-radius: 9999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.adm-btn:hover:not(:disabled) { background: rgba(168, 85, 247, 0.25); }
+.adm-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.adm-btn--icon { padding: 0.4rem 0.7rem; }
+.adm-btn--danger { color: #fecaca; border-color: #f87171; background: rgba(248, 113, 113, 0.08); }
+.adm-btn--danger:hover:not(:disabled) { background: rgba(248, 113, 113, 0.22); }
+.adm-btn--primary {
+  color: #fff;
+  border: 0;
+  background: linear-gradient(90deg, #c026d3, #7c3aed 55%, #3b82f6);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+}
+.adm-btn--primary:hover:not(:disabled) { transform: translateY(-1px); }
+.adm-btn--primary:disabled { cursor: progress; }
+
+.adm-bar {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 30;
+  background: rgba(7, 7, 26, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(139, 92, 246, 0.25);
+}
+.adm-bar__inner { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; padding: 0.8rem 0; }
+.adm-status { margin-right: auto; font-size: 0.9rem; color: var(--d-muted); }
+.adm-status--ok { color: #86efac; }
+.adm-status--error { color: #fca5a5; }
+
 :root {
   --paper: #f3f4ee;
   --ink: #1b2a41;

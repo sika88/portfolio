@@ -159,6 +159,11 @@ export default function AvatarUploader({ name }: { name: string }) {
               Sign out
             </button>
           </li>
+          <li role="none">
+            <button role="menuitem" onClick={() => (window.location.href = "/admin")}>
+                Admin dashboard
+            </button>
+</li>
         </ul>
       )}
     </>

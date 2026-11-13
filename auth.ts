@@ -7,8 +7,8 @@ const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [Google],
   session: { strategy: "jwt" },
+  pages: { signIn: "/signin", error: "/signin" },
   callbacks: {
-    // Only the admin's verified Google account can sign in at all
     signIn({ profile }) {
       return (
         !!adminEmail &&
