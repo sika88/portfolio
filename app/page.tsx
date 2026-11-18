@@ -1,192 +1,173 @@
-import SiteHeader from "@/components/SiteHeader";
-import CurrentYear from "@/components/CurrentYear";
-import HeroPhoto from "@/components/HeroPhoto";
-import { getContent, whatsappLink } from "@/lib/content";
+import Icon from "@/components/icons";
+import Hero from "@/components/hero";
+import Marquee from "@/components/marquee";
+import ProjectCard from "@/components/project-card";
+import Reveal from "@/components/reveal";
+import SectionHeading from "@/components/section-heading";
+import WhatsAppButton from "@/components/whatsapp-button";
+import { PROCESS, PROJECTS, SERVICES, SITE, STACK, telLink } from "@/lib/content";
 
-export default async function Home() {
-  const { profile, tagline, skills, services, projects } = await getContent();
-
-  const talk = whatsappLink(profile.whatsapp, profile.name);
-  const talkProps = talk
-    ? { href: talk, target: "_blank", rel: "noopener noreferrer" }
-    : { href: `mailto:${profile.email}` };
-
-  const stackList = Array.from(new Set(projects.flatMap((p) => p.stack))).slice(0, 5);
-  const codeSample = `const developer = {
-  name: ${JSON.stringify(profile.name)},
-  location: ${JSON.stringify(profile.location)},
-  stack: ${JSON.stringify(stackList)},
-  openToWork: true,
-};`;
+export default function Home() {
+  const [featured, ...others] = PROJECTS;
 
   return (
-    <div className="pf" id="top">
-      <SiteHeader name={profile.name} />
+    <>
+      <Hero />
+      <Marquee />
 
-      <main>
-        {/* ---------- Hero ---------- */}
-        <section className="pf-hero pf-container">
-          <div className="pf-hero__text">
-            <p className="pf-pill">Based in {profile.location}</p>
-            <h1>
-              Hi, I’m <span className="pf-grad">{profile.name}</span>
-            </h1>
-            <p className="pf-lead">{tagline}</p>
-            <div className="pf-actions">
-              <a className="pf-btn pf-btn--primary" href="#projects">
-                View my work <span aria-hidden="true">→</span>
-              </a>
-              <a className="pf-btn pf-btn--ghost" {...talkProps}>
-                Let’s talk
-              </a>
-            </div>
-          </div>
-          <HeroPhoto name={profile.name} />
-        </section>
-
-        {/* ---------- About ---------- */}
-        <section id="about" className="pf-section pf-container" aria-labelledby="about-title">
-          <h2 id="about-title" className="pf-h2">
-            About <span className="pf-grad">Me</span>
-          </h2>
-          <div className="pf-about">
-            <div>
-              <p className="pf-about__text">{profile.intro}</p>
-              <ul className="pf-tags">
-                {services.map((s) => (
-                  <li key={s}>{s}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="pf-code" aria-hidden="true">
-              <div className="pf-code__bar">
-                <span />
-                <span />
-                <span />
-              </div>
-              <pre>
-                <code>{codeSample}</code>
-              </pre>
-            </div>
-          </div>
-        </section>
-
-        {/* ---------- Skills ---------- */}
-        <section id="skills" className="pf-section pf-container" aria-labelledby="skills-title">
-          <h2 id="skills-title" className="pf-h2">
-            My <span className="pf-grad">Skills</span>
-          </h2>
-          <ul className="pf-skills">
-            {skills.map((name) => (
-              <li key={name} className="pf-skill">
-                <span className="pf-skill__badge">{name.slice(0, 2)}</span>
-                <span>{name}</span>
-              </li>
+      <section id="work" className="container-page pt-24">
+        <SectionHeading
+          eyebrow="Selected work"
+          title="Things I’ve built"
+          text="Real projects, built end to end: design, database, payments and launch."
+        />
+        <div className="mt-12 space-y-6">
+          <Reveal>
+            <ProjectCard project={featured} featured />
+          </Reveal>
+          <div className="grid gap-6 lg:grid-cols-2">
+            {others.map((p, i) => (
+              <Reveal key={p.slug} delay={i * 120}>
+                <ProjectCard project={p} />
+              </Reveal>
             ))}
-          </ul>
-        </section>
-
-        {/* ---------- Projects ---------- */}
-        <section id="projects" className="pf-section pf-container" aria-labelledby="projects-title">
-          <div className="pf-section__head">
-            <h2 id="projects-title" className="pf-h2">
-              My <span className="pf-grad">Projects</span>
-            </h2>
-            {profile.github && (
-              <a className="pf-link" href={profile.github} target="_blank" rel="noopener noreferrer">
-                View all →
-              </a>
-            )}
           </div>
-          <div className="pf-projects">
-            {projects.map((p, i) => (
-              <article key={`${p.title}-${i}`} className="pf-card">
-                <div className="pf-card__banner" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </div>
-                <h3>{p.title}</h3>
-                <p>{p.summary}</p>
-                <ul className="pf-chips">
-                  {p.stack.map((s) => (
-                    <li key={s}>{s}</li>
+        </div>
+      </section>
+
+      <section id="services" className="container-page pt-28">
+        <SectionHeading eyebrow="What I do" title="Websites, shops and apps that earn their keep" />
+        <div className="mt-12 grid gap-5 sm:grid-cols-2">
+          {SERVICES.map((s, i) => (
+            <Reveal key={s.title} delay={(i % 2) * 120}>
+              <div className="h-full rounded-3xl border border-border bg-surface p-7 transition hover:border-accent/50">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/12 text-accent">
+                  <Icon name={s.icon} className="h-6 w-6" />
+                </span>
+                <h3 className="mt-5 font-display text-xl font-semibold">{s.title}</h3>
+                <p className="mt-2 text-muted">{s.text}</p>
+                <ul className="mt-5 space-y-2 text-sm">
+                  {s.points.map((p) => (
+                    <li key={p} className="flex items-start gap-2.5">
+                      <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-green" />
+                      {p}
+                    </li>
                   ))}
                 </ul>
-                <div className="pf-card__links">
-                  {p.live ? (
-                    <a href={p.live} target="_blank" rel="noopener noreferrer">
-                      Live site ↗
-                    </a>
-                  ) : (
-                    <span className="pf-muted">In progress</span>
-                  )}
-                  {p.code && (
-                    <a href={p.code} target="_blank" rel="noopener noreferrer">
-                      Source code ↗
-                    </a>
-                  )}
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section id="process" className="container-page pt-28">
+        <SectionHeading eyebrow="How we work" title="Simple, clear and out in the open" />
+        <ol className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {PROCESS.map((s, i) => (
+            <li key={s.title}>
+              <Reveal delay={i * 100} className="h-full">
+                <div className="h-full rounded-3xl border border-border bg-surface p-6">
+                  <p className="font-mono text-sm text-accent">0{i + 1}</p>
+                  <h3 className="mt-3 font-display text-xl font-semibold">{s.title}</h3>
+                  <p className="mt-2 text-sm text-muted">{s.text}</p>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+      </section>
 
-        {/* ---------- Contact ---------- */}
-        <section id="contact" className="pf-section pf-container" aria-labelledby="contact-title">
-          <h2 id="contact-title" className="pf-h2">
-            Contact <span className="pf-grad">Me</span>
-          </h2>
-          <div className="pf-contact">
-            <ul className="pf-social">
-              {profile.github && (
-                <li>
-                  <a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                    <svg viewBox="0 0 16 16" aria-hidden="true">
-                      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-                    </svg>
-                  </a>
-                </li>
-              )}
-              {profile.linkedin && (
-                <li>
-                  <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                    </svg>
-                  </a>
-                </li>
-              )}
-              {talk && (
-                <li>
-                  <a href={talk} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                    </svg>
-                  </a>
-                </li>
-              )}
-              {profile.email && (
-                <li>
-                  <a href={`mailto:${profile.email}`} aria-label="Email">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                    </svg>
-                  </a>
-                </li>
-              )}
-            </ul>
-            <a className="pf-btn pf-btn--ghost" {...talkProps}>
-              Let’s talk
-            </a>
+      <section id="about" className="container-page pt-28">
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr]">
+          <div>
+            <SectionHeading eyebrow="About" title={`Hi, I’m ${SITE.name}`} />
+            <Reveal delay={120}>
+              <div className="mt-6 space-y-4 text-muted">
+                <p>
+                  I’m a {SITE.role} in {SITE.location}. I build websites and web apps for businesses that need to look professional, load fast, and
+                  take orders and payments the way their customers actually pay: Mobile Money, cards and WhatsApp.
+                </p>
+                <p>
+                  I like finishing the unglamorous parts properly: payments that can’t be double-counted, stock that can’t oversell, and admin
+                  screens the owner can use on a phone.
+                </p>
+                <p>
+                  I work in the open. You get a live preview link early, you own every account at the end, and you can reach me directly on WhatsApp.
+                </p>
+              </div>
+            </Reveal>
           </div>
-        </section>
-      </main>
 
-      <footer className="pf-footer pf-container">
-        <span>
-          © <CurrentYear /> {profile.name}
-        </span>
-        <a href="/admin">Admin</a>
-      </footer>
-    </div>
+          <Reveal delay={160}>
+            <div className="rounded-3xl border border-border bg-surface p-7">
+              <h3 className="eyebrow">Toolbox</h3>
+              <dl className="mt-5 space-y-5">
+                {STACK.map((g) => (
+                  <div key={g.group}>
+                    <dt className="text-sm font-medium">{g.group}</dt>
+                    <dd className="mt-2 flex flex-wrap gap-2">
+                      {g.items.map((i) => (
+                        <span key={i} className="chip">
+                          {i}
+                        </span>
+                      ))}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section id="contact" className="container-page pt-28">
+        <Reveal>
+          <div className="relative isolate overflow-hidden rounded-[2rem] border border-border bg-surface p-8 sm:p-14">
+            <div aria-hidden="true" className="drift absolute -right-20 -top-24 -z-10 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />
+            <div aria-hidden="true" className="bg-grid absolute inset-0 -z-10 opacity-60" />
+
+            <p className="eyebrow">Let’s talk</p>
+            <h2 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+              Need a website or an online shop? <span className="text-gradient">Message me.</span>
+            </h2>
+            <p className="mt-5 max-w-xl text-muted">
+              Tell me what you sell, how your customers pay today, and any sites you like. I’ll reply with ideas and a clear way forward.
+            </p>
+
+            <div className="mt-9 flex flex-wrap gap-3">
+              <WhatsAppButton message="Hello Sika! I saw your portfolio and I'd like to talk about a project.">WhatsApp {SITE.phoneDisplay}</WhatsAppButton>
+              <a href={telLink} className="btn-outline">
+                <Icon name="phone" />
+                Call me
+              </a>
+              {SITE.email && (
+                <a href={`mailto:${SITE.email}`} className="btn-outline">
+                  <Icon name="mail" />
+                  Email
+                </a>
+              )}
+              {SITE.cvUrl && (
+                <a href={SITE.cvUrl} className="btn-outline" download>
+                  <Icon name="download" />
+                  Download CV
+                </a>
+              )}
+            </div>
+
+            {SITE.social.length > 0 && (
+              <ul className="mt-8 flex flex-wrap gap-5 text-sm">
+                {SITE.social.map((s) => (
+                  <li key={s.href}>
+                    <a href={s.href} target="_blank" rel="noopener noreferrer" className="text-muted underline underline-offset-4 transition hover:text-accent">
+                      {s.label}<span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </Reveal>
+      </section>
+    </>
   );
 }
