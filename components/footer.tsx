@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { NAV, SITE, telLink, waLink } from "@/lib/content";
 
+async function CurrentYear() {
+  "use cache";
+  return <>{new Date().getFullYear()}</>;
+}
+
 export default function Footer() {
   return (
     <footer className="mt-28 border-t border-border">
@@ -52,7 +57,7 @@ export default function Footer() {
 
       <div className="border-t border-border">
         <p className="container-page py-5 text-xs text-muted">
-          © {new Date().getFullYear()} {SITE.name} · {SITE.business}. Built with Next.js.
+          © <CurrentYear /> {SITE.name} · {SITE.business}. Built with Next.js.
         </p>
       </div>
     </footer>
