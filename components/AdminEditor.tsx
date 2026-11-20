@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 import { resetContent, saveContent } from "@/app/admin/actions";
-import type { SiteContent } from "@/lib/content";
+import type { SiteContent } from "@/lib/admin-content";
 
 type ProjectForm = {
   title: string;

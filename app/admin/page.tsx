@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { auth, isAdminSession } from "@/auth";
-import { getContent } from "@/lib/content";
+import { getContent } from "@/lib/admin-content";
 import AdminEditor from "@/components/AdminEditor";
 
 export const metadata: Metadata = {

@@ -27,14 +27,20 @@ export default function OpengraphImage() {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 30, color: "#f2c14e", letterSpacing: 6, textTransform: "uppercase" }}>{SITE.role}</div>
-          <div style={{ fontSize: 96, fontWeight: 700, lineHeight: 1.05, marginTop: 18 }}>{SITE.name}</div>
-          <div style={{ fontSize: 38, color: "#94a59b", marginTop: 22 }}>Websites · Online shops · Web apps for businesses in {SITE.location}</div>
+          <div style={{ fontSize: 30, color: "#f2c14e", letterSpacing: 6, textTransform: "uppercase" }}>
+            {SITE.role}
+          </div>
+          <div style={{ fontSize: 96, fontWeight: 700, lineHeight: 1.05, marginTop: 18 }}>
+            {SITE.name}
+          </div>
+          <div style={{ display: "flex", fontSize: 38, color: "#94a59b", marginTop: 22 }}>
+            {`Websites · Online shops · Web apps for businesses in ${SITE.location}`}
+          </div>
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 28, color: "#94a59b" }}>
           <span>{SITE.business}</span>
-          <span>WhatsApp {SITE.phoneDisplay}</span>
+          <span>{`WhatsApp ${SITE.phoneDisplay}`}</span>
         </div>
       </div>
     ),

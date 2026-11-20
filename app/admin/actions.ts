@@ -8,7 +8,7 @@ import {
   ensureContentTable,
   normalize,
   type SiteContent,
-} from "@/lib/content";
+} from "@/lib/admin-content";
 
 type Result = { ok: boolean; error?: string; content?: SiteContent };
 
