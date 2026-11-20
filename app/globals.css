@@ -128,3 +128,154 @@ body {
   .eyebrow { @apply font-mono text-xs uppercase tracking-[0.22em] text-accent; }
   .chip { @apply inline-flex items-center rounded-full border border-border bg-surface-2 px-3 py-1 font-mono text-[11px] text-muted; }
 }
+
+/* ---------- Admin sign-in ---------- */
+.signin__card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100% - 2.5rem);
+  max-width: 26rem;
+  margin: clamp(4rem, 14vh, 9rem) auto 0;
+  padding: 2.5rem 2rem 2rem;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.7);
+  animation: pop-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* the same red, gold and green line used at the top of the site */
+.signin__card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ce1126 0 33.33%, #fcd116 33.33% 66.66%, #006b3f 66.66% 100%);
+}
+
+.signin__icon {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-bottom: 1.25rem;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-radius: 1rem;
+}
+
+.signin__card h1 {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.signin__lead {
+  margin-top: 0.6rem;
+  max-width: 21rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.signin__error {
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  text-align: left;
+  color: #ffb4b4;
+  background: rgba(206, 17, 38, 0.12);
+  border: 1px solid rgba(206, 17, 38, 0.4);
+  border-radius: 0.75rem;
+}
+
+.signin__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 3rem;
+  margin-top: 1.75rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--foreground);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s, transform 0.2s;
+}
+.signin__button:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface-2));
+}
+.signin__button:active:not(:disabled) {
+  transform: scale(0.985);
+}
+.signin__button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.signin__note {
+  margin-top: 1.25rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.signin__back {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  transition: color 0.2s, transform 0.2s;
+}
+.signin__back:hover {
+  color: var(--accent);
+  transform: translateX(-3px);
+}
+
+.signin {
+  display: grid;
+  place-items: center;
+  min-height: 70vh;
+  padding: 3rem 0;
+}
+
+.signin {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+}
+
+/* soft gold glow behind the card */
+.signin__stripe {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 50% 60% at 50% 40%,
+    color-mix(in srgb, var(--accent) 10%, transparent),
+    transparent 70%
+  );
+}
+
+.signin__main {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 3rem 1.25rem;
+}
