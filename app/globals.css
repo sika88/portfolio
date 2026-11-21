@@ -88,18 +88,12 @@ body {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-4%, 6%, 0); }
 }
-@keyframes marquee {
-  to { transform: translateX(-50%); }
-}
 
 .fade-up { animation: fade-up 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: var(--d, 0ms); }
 .pop-in { animation: pop-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: var(--d, 0ms); }
 .float-slow { animation: float-slow 8s ease-in-out infinite; }
 .drift { animation: drift 16s ease-in-out infinite alternate; }
 
-.marquee { overflow: hidden; }
-.marquee-track { display: flex; width: max-content; animation: marquee 40s linear infinite; }
-.marquee:hover .marquee-track { animation-play-state: paused; }
 
 .reveal-hidden { opacity: 0; transform: translateY(28px); }
 .reveal-shown {

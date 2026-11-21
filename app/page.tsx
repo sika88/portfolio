@@ -1,6 +1,5 @@
 import Icon from "@/components/icons";
 import Hero from "@/components/hero";
-import Marquee from "@/components/marquee";
 import ProjectCard from "@/components/project-card";
 import Reveal from "@/components/reveal";
 import SectionHeading from "@/components/section-heading";
@@ -13,7 +12,6 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Marquee />
 
       <section id="work" className="container-page pt-24">
         <SectionHeading
