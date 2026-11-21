@@ -39,7 +39,6 @@ export default function OpengraphImage() {
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 28, color: "#94a59b" }}>
-          <span>{SITE.business}</span>
           <span>{`WhatsApp ${SITE.phoneDisplay}`}</span>
         </div>
       </div>

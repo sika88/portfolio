@@ -12,7 +12,6 @@ export default function Footer() {
       <div className="container-page grid gap-10 py-14 sm:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <p className="font-display text-xl font-semibold">{SITE.name}</p>
-          <p className="mt-1 text-sm text-muted">{SITE.business}</p>
           <p className="mt-4 max-w-xs text-sm text-muted">
             {SITE.role} in {SITE.location}. Websites, online shops and web apps for businesses.
           </p>
@@ -57,7 +56,7 @@ export default function Footer() {
 
       <div className="border-t border-border">
         <p className="container-page py-5 text-xs text-muted">
-          © <CurrentYear /> {SITE.name} · {SITE.business}. Built with Next.js.
+          © <CurrentYear /> {SITE.name}. Built with Next.js.
         </p>
       </div>
     </footer>
