@@ -5,6 +5,8 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { SITE } from "@/lib/content";
 import { SITE_URL } from "@/lib/seo";
+import { Suspense } from "react";
+import Backgrounds from "@/components/Backgrounds";
 
 const sans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const mono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -59,6 +61,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable} ${display.variable}`}>
       <body className="flex min-h-screen flex-col">
+        <Suspense fallback={null}>
+          <Backgrounds />
+        </Suspense>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
         <a
           href="#main"

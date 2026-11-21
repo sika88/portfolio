@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { auth, isAdminSession } from "@/auth";
 import { getContent } from "@/lib/admin-content";
 import AdminEditor from "@/components/AdminEditor";
+import { getBackgrounds } from "@/lib/backgrounds";
 
 export const metadata: Metadata = {
   title: "Admin dashboard",
@@ -12,8 +13,8 @@ export const metadata: Metadata = {
 
 async function Gate() {
   if (!isAdminSession(await auth())) redirect("/signin");
-  const content = await getContent();
-  return <AdminEditor initial={content} />;
+  const [content, backgrounds] = await Promise.all([getContent(), getBackgrounds()]);
+  return <AdminEditor initial={content} backgrounds={backgrounds} />;
 }
 
 export default function AdminPage() {

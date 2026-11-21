@@ -2,7 +2,7 @@
 
 export const SITE = {
   name: "Sika Abraham",
-  business: "KOSSOU-TEK ENTERPRISE",
+
   role: "Next.js developer",
   location: "Ghana",
   phoneDisplay: "054 024 5553",

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 :root {
   --background: #0b0f0d;
   --foreground: #edf2ee;
@@ -505,3 +506,92 @@ body {
 .adm-status--ok { color: var(--green); }
 .adm-status--error { color: #ff8d98; }
 .adm-status--saving { color: var(--accent); }
+
+/* ---------- Site background photos ---------- */
+.bgfx {
+  --bg-dim: 0.72; /* 0 = photo at full strength, 1 = fully dark. Raise it if text is hard to read */
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bgfx__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 20%; /* keeps faces in frame on tall phone screens */
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  will-change: opacity;
+}
+.bgfx__img[data-on="true"] {
+  opacity: 1;
+}
+.bgfx__shade {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--background) calc(var(--bg-dim) * 100%), transparent);
+}
+
+/* ---------- Admin: background photo slots ---------- */
+.adm-bg {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+@media (min-width: 48rem) {
+  .adm-bg {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.adm-bg__slot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+.adm-bg__thumb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: var(--surface-2);
+  border: 1px dashed var(--border);
+  border-radius: 1rem;
+}
+.adm-bg__thumb--filled {
+  border-style: solid;
+}
+.adm-bg__thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 20%;
+}
+.adm-bg__label {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.adm-bg__actions {
+  display: flex;
+  gap: 0.4rem;
+}
+.adm-bg__actions .adm-btn {
+  flex: 1;
+  min-height: 2.25rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.78rem;
+}

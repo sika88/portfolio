@@ -4,6 +4,8 @@ import { useState } from "react";
 import { signOut } from "next-auth/react";
 import { resetContent, saveContent } from "@/app/admin/actions";
 import type { SiteContent } from "@/lib/admin-content";
+import BackgroundManager from "@/components/BackgroundManager";
+import type { BgSlot } from "@/lib/backgrounds";
 
 type ProjectForm = {
   title: string;
@@ -84,7 +86,13 @@ function Field({
   );
 }
 
-export default function AdminEditor({ initial }: { initial: SiteContent }) {
+export default function AdminEditor({
+  initial,
+  backgrounds,
+}: {
+  initial: SiteContent;
+  backgrounds: BgSlot[];
+}) {
   const [form, setForm] = useState<Form>(() => toForm(initial));
   const [status, setStatus] = useState<Status>({ kind: "idle" });
 
@@ -188,6 +196,7 @@ export default function AdminEditor({ initial }: { initial: SiteContent }) {
             </Field>
           </div>
         </section>
+        <BackgroundManager initial={backgrounds} />
 
         <section className="adm-card">
           <h2>Contact</h2>
@@ -284,4 +293,4 @@ export default function AdminEditor({ initial }: { initial: SiteContent }) {
       </div>
     </>
   );
-}
+} 
